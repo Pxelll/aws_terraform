@@ -14,9 +14,8 @@ provider "aws" {
 }
 
 resource "aws_vpc" "vpc_workspace" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/28"
   instance_tenancy = "default"
-  ipv4_netmask_length = 28
   enable_dns_support = true
   enable_dns_hostnames = true
 
