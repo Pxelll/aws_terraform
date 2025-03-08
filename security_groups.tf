@@ -22,7 +22,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_public" {
   to_port           = 22
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_ssh_from_private" {
+resource "aws_vpc_security_group_ingress_rule" "allow_ssh_to_private" {
   security_group_id = aws_security_group.public_sg.id
   cidr_ipv4         = aws_vpc.vpc_workspace.cidr_block
   from_port         = 22
@@ -54,9 +54,35 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_private" {
   to_port           = 22
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allow_http_public" {
+  security_group_id = aws_security_group.private_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_http_public" {
+  security_group_id = aws_security_group.private_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 8080
+  ip_protocol       = "tcp"
+  to_port           = 8080
+}
+
 resource "aws_vpc_security_group_egress_rule" "anything_can_go_out_private" {
   security_group_id = aws_security_group.private_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   #cidr_ipv4         = aws_security_group.private_sg.id 
   ip_protocol = "-1"
+}
+
+resource "aws_security_group_rule" "allow_ssh_public_to_private" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "tcp"
+  security_group_id = aws_security_group.private_sg.id
+  source_security_group_id = aws_security_group.public_sg.id
+  
 }
