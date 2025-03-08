@@ -30,10 +30,12 @@ resource "aws_instance" "public_ec2" {
               echo "adam:noble6" | sudo chpasswd
               sudo usermod -aG wheel adam
               mkdir -p /home/adam/.ssh
-              cp /home/ec2-user/.ssh/authorized_keys /home/adam/.ssh/authorized_keys
+              cp /home/ubuntu/.ssh/authorized_keys /home/adam/.ssh/authorized_keys
               chown -R adam:adam /home/adam/.ssh
               chmod 700 /home/adam/.ssh
-              chmod 600 /home/adam/.ssh/authorized_keys              
+              chmod 600 /home/adam/.ssh/authorized_keys
+              sudo chsh -s /bin/bash adam
+              sudo usermod -aG sudo adam
               EOF
 
   tags = {
@@ -54,6 +56,8 @@ resource "aws_instance" "private_ec2" {
               sudo useradd -m adam
               echo "adam:noble6" | sudo chpasswd
               sudo usermod -aG wheel adam
+              sudo chsh -s /bin/bash adam
+              sudo usermod -aG sudo adam
               sudo sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
               sudo systemctl restart sshd
               EOF
