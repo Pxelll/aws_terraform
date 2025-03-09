@@ -11,7 +11,7 @@ Here we will create 1 VPC with 2 subnets:
 - **Private subnet**:  
   You can login from an instance inside the public subnet only. This subnet only has port 22 open for the VPC which Terraform will create! It does not have access to the internet.
 
-Feel free to take a look at the .tf files. I have security groups, some EC2 instances configured to launch, IP outputs, private key creation, and more!
+Feel free to take a look at the .tf files. I have security groups, some EC2 instances configured to launch, IP outputs, private key creation, and more! You can set your own user and password on variables file!
 
 **Prerequisites**:
 

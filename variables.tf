@@ -8,3 +8,8 @@ variable "user" {
   description = "The user to create on the EC2 instance"
   default     = "adam"
 }
+
+variable "user_password" {
+  description = "Password for ${var.user}"
+  default = "noble6"
+}
