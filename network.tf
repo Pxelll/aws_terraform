@@ -1,3 +1,4 @@
+# VPC ->
 resource "aws_vpc" "vpc_workspace" {
   cidr_block           = "10.0.0.0/16"
   instance_tenancy     = "default"
@@ -16,30 +17,6 @@ resource "aws_internet_gateway" "Internet_Access" {
   tags = {
     "Name" = "Internet Access"
   }
-
-}
-
-resource "aws_subnet" "public_subnet" {
-  vpc_id                  = aws_vpc.vpc_workspace.id
-  cidr_block              = "10.0.1.0/24"
-  availability_zone       = "us-east-1a"
-  map_public_ip_on_launch = true
-
-  tags = {
-    "Name"    = "Public Subnet"
-    "Network" = "Open"
-  }
-}
-
-resource "aws_subnet" "private_subnet" {
-  vpc_id                  = aws_vpc.vpc_workspace.id
-  cidr_block              = "10.0.2.0/24"
-  availability_zone       = "us-east-1b"
-  map_public_ip_on_launch = false
-  tags = {
-    "Name"    = "Private Subnet"
-    "Network" = "Closed"
-  }
 }
 
 resource "aws_route_table" "public_route_table" {
@@ -54,7 +31,32 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 
+# Public Subnet ->
+resource "aws_subnet" "public_subnet" {
+  vpc_id                  = aws_vpc.vpc_workspace.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "us-east-1a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    "Name"    = "Public Subnet"
+    "Network" = "Open"
+  }
+}
+
 resource "aws_route_table_association" "public_route_table_association" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.public_route_table.id
+}
+
+# Private subnet ->
+resource "aws_subnet" "private_subnet" {
+  vpc_id                  = aws_vpc.vpc_workspace.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "us-east-1b"
+  map_public_ip_on_launch = false
+  tags = {
+    "Name"    = "Private Subnet"
+    "Network" = "Closed"
+  }
 }
