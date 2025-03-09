@@ -27,7 +27,7 @@ resource "aws_instance" "public_ec2" {
   user_data = <<-EOF
               #!/bin/bash
               sudo useradd -m ${var.user}
-              echo "${var.user}:noble6" | sudo chpasswd
+              echo "${var.user}:${var.user_password}" | sudo chpasswd
               sudo usermod -aG wheel ${var.user}
               mkdir -p /home/${var.user}/.ssh
               cp /home/ec2-user/.ssh/authorized_keys /home/${var.user}/.ssh/authorized_keys
@@ -54,7 +54,7 @@ resource "aws_instance" "private_ec2" {
   user_data = <<-EOF
               #!/bin/bash
               sudo useradd -m ${var.user}
-              echo "${var.user}:noble6" | sudo chpasswd
+              echo "${var.user}:${var.user_password}" | sudo chpasswd
               sudo usermod -aG wheel ${var.user}
               mkdir -p /home/${var.user}/.ssh
               cp /home/ec2-user/.ssh/authorized_keys /home/${var.user}/.ssh/authorized_keys
