@@ -63,6 +63,8 @@ resource "aws_instance" "private_ec2" {
               chmod 600 /home/${var.user}/.ssh/authorized_keys
               sudo chsh -s /bin/bash ${var.user}
               sudo usermod -aG sudo ${var.user}
+              sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+              sudo systemctl restart sshd
               EOF
 
   tags = {
